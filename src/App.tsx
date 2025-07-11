@@ -16,6 +16,7 @@ import Dashboard from '@/pages/Dashboard';
 import Officer from '@/pages/Officer';
 import Audit from '@/pages/Audit';
 import Heatmap from '@/pages/Heatmap';
+import About from '@/pages/About';
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                 <Route path="/officer" element={<Officer />} />
                 <Route path="/audit" element={<Audit />} />
                 <Route path="/heatmap" element={<Heatmap />} />
+                <Route path="/about" element={<About />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

@@ -1,0 +1,98 @@
+
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "apply": "Apply",
+    "download": "Download",
+    "upload": "Upload",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "view": "View",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "apply": "Apply",
+    "track": "Track",
+    "dashboard": "Dashboard",
+    "about": "About Us",
+    "contact": "Contact",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "home": {
+    "heroTitle": "Transparency in Every Click",
+    "heroSubtitle": "Apply for government certificates online with real-time tracking, automated updates, and complete transparency",
+    "applyNow": "Apply Now",
+    "trackApplication": "Track Application",
+    "viewDashboard": "View Dashboard",
+    "features": "Features",
+    "statistics": "Statistics",
+    "testimonials": "What Citizens Say"
+  },
+  "apply": {
+    "title": "Apply for Certificate",
+    "personalInfo": "Personal Information",
+    "certificateType": "Certificate Type", 
+    "documentUpload": "Document Upload",
+    "reviewSubmit": "Review & Submit",
+    "fullName": "Full Name",
+    "mobileNumber": "Mobile Number",
+    "aadhaarNumber": "Aadhaar Number",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "email": "Email",
+    "address": "Address",
+    "pincode": "Pincode",
+    "submit": "Submit Application"
+  },
+  "track": {
+    "title": "Track Your Application",
+    "enterApplicationId": "Enter Application ID",
+    "scanQr": "Scan QR Code",
+    "applicationStatus": "Application Status",
+    "timeline": "Timeline",
+    "notifications": "Notifications"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "myApplications": "My Applications",
+    "certificates": "Certificates",
+    "notifications": "Notifications",
+    "profile": "Profile"
+  },
+  "certificates": {
+    "birth": "Birth Certificate",
+    "death": "Death Certificate", 
+    "income": "Income Certificate",
+    "caste": "Caste Certificate",
+    "domicile": "Domicile Certificate",
+    "character": "Character Certificate",
+    "other": "Other"
+  },
+  "status": {
+    "submitted": "Submitted",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "delayed": "Delayed",
+    "rejected": "Rejected"
+  },
+  "features": {
+    "realTimeTracking": "Real-time Tracking",
+    "smsEmailUpdates": "SMS & Email Updates",
+    "multilingualInterface": "Multilingual Interface",
+    "qrCertificates": "QR Certificates"
+  }
+}
