@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -14,37 +14,33 @@ import {
   Star,
   Users,
   TrendingUp,
-  Shield,
-  Baby,
-  Heart
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import BirthDeathModule from '@/components/BirthDeathModule';
 
 const Landing: React.FC = () => {
   const { t } = useTranslation();
-  const [showBirthDeathModule, setShowBirthDeathModule] = useState(false);
 
   const features = [
     {
       icon: BarChart3,
-      title: t('features.realTimeTracking'),
+      title: t('realTimeTracking'),
       description: 'Track your application status with detailed progress updates and estimated completion times.'
     },
     {
       icon: Bell,
-      title: t('features.smsEmailUpdates'),
+      title: t('smsEmailUpdates'),
       description: 'Receive instant notifications via SMS, Email, and WhatsApp at every step of the process.'
     },
     {
       icon: Globe,
-      title: t('features.multilingualInterface'),
+      title: t('multilingualInterface'),
       description: 'Access services in English, Hindi, Tamil, and more regional languages.'
     },
     {
       icon: QrCode,
-      title: t('features.qrCertificates'),
+      title: t('qrCertificates'),
       description: 'Digital certificates with QR codes for instant verification and authenticity.'
     }
   ];
@@ -80,10 +76,6 @@ const Landing: React.FC = () => {
     { label: 'Active Users', value: '1,23,456', icon: Users }
   ];
 
-  if (showBirthDeathModule) {
-    return <BirthDeathModule onBack={() => setShowBirthDeathModule(false)} />;
-  }
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -96,7 +88,7 @@ const Landing: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-6xl font-bold mb-6"
             >
-              {t('home.heroTitle')}
+              {t('heroTitle')}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -104,7 +96,7 @@ const Landing: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto"
             >
-              {t('home.heroSubtitle')}
+              {t('heroSubtitle')}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -114,83 +106,15 @@ const Landing: React.FC = () => {
             >
               <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg" asChild>
                 <Link to="/apply">
-                  {t('home.applyNow')}
+                  {t('applyNow')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 text-lg" asChild>
                 <Link to="/track">
-                  {t('home.trackApplication')}
+                  {t('trackApplication')}
                 </Link>
               </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Birth & Death Module Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Birth & Death Registration
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Quick and easy registration services for birth and death certificates
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card 
-                className="h-full hover:shadow-lg transition-shadow cursor-pointer group"
-                onClick={() => setShowBirthDeathModule(true)}
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                    <Baby className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                    Birth Certificate
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Register births and get official birth certificates
-                  </p>
-                  <Button className="w-full">
-                    Birth Services
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <Card 
-                className="h-full hover:shadow-lg transition-shadow cursor-pointer group"
-                onClick={() => setShowBirthDeathModule(true)}
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Heart className="h-8 w-8 text-red-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                    Death Certificate
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Register deaths and get official death certificates
-                  </p>
-                  <Button className="w-full bg-red-600 hover:bg-red-700">
-                    Death Services
-                  </Button>
-                </CardContent>
-              </Card>
             </motion.div>
           </div>
         </div>
@@ -333,7 +257,7 @@ const Landing: React.FC = () => {
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 text-lg" asChild>
               <Link to="/dashboard">
-                {t('home.viewDashboard')}
+                View Dashboard
               </Link>
             </Button>
           </div>
