@@ -3,23 +3,54 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Shield, Menu, X } from 'lucide-react';
+import { Shield, Menu, X, ChevronDown, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import LanguageSelector from '@/components/LanguageSelector';
+import { useAuth } from '@/contexts/AuthContext';
+import UserLoginModal from '@/components/auth/UserLoginModal';
+import OfficerLoginModal from '@/components/auth/OfficerLoginModal';
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { user, logout, isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [showUserLogin, setShowUserLogin] = React.useState(false);
+  const [showOfficerLogin, setShowOfficerLogin] = React.useState(false);
 
-  const navigation = [
-    { name: t('home'), href: '/' },
-    { name: t('apply'), href: '/apply' },
-    { name: t('track'), href: '/track' },
-    { name: t('dashboard'), href: '/dashboard' },
-    { name: t('auditWall'), href: '/audit' },
-    { name: t('heatmap'), href: '/heatmap' }
-  ];
+  // Role-based navigation
+  const getNavigation = () => {
+    if (!isAuthenticated) {
+      return [
+        { name: t('home'), href: '/' },
+        { name: t('apply'), href: '/apply' },
+        { name: t('track'), href: '/track' },
+        { name: t('dashboard'), href: '/dashboard' },
+        { name: t('auditWall'), href: '/audit' },
+        { name: t('heatmap'), href: '/heatmap' }
+      ];
+    }
+    
+    if (user?.role === 'user') {
+      return [
+        { name: t('home'), href: '/' },
+        { name: t('apply'), href: '/apply' },
+        { name: t('track'), href: '/track' }
+      ];
+    }
+    
+    if (user?.role === 'officer') {
+      return [
+        { name: t('dashboard'), href: '/dashboard' },
+        { name: t('auditWall'), href: '/audit' }
+      ];
+    }
+    
+    return [];
+  };
+
+  const navigation = getNavigation();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -58,9 +89,38 @@ const Header: React.FC = () => {
           {/* Right Side */}
           <div className="flex items-center space-x-4">
             <LanguageSelector />
-            <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex">
-              <Link to="/officer">{t('login')}</Link>
-            </Button>
+            
+            {!isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+                    {t('login')} <ChevronDown className="ml-1 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => setShowUserLogin(true)}>
+                    User Login
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setShowOfficerLogin(true)}>
+                    Officer Login
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+                    {user?.name} <ChevronDown className="ml-1 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
             
             {/* Mobile menu button */}
             <Button
@@ -98,14 +158,51 @@ const Header: React.FC = () => {
                 </Link>
               ))}
               <div className="pt-2 border-t border-gray-200">
-                <Button variant="outline" size="sm" asChild className="w-full">
-                  <Link to="/officer">{t('login')}</Link>
-                </Button>
+                {!isAuthenticated ? (
+                  <div className="space-y-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => setShowUserLogin(true)}
+                    >
+                      User Login
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => setShowOfficerLogin(true)}
+                    >
+                      Officer Login
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={logout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </Button>
+                )}
               </div>
             </div>
           </motion.div>
         )}
       </div>
+      
+      {/* Login Modals */}
+      <UserLoginModal 
+        isOpen={showUserLogin} 
+        onClose={() => setShowUserLogin(false)} 
+      />
+      <OfficerLoginModal 
+        isOpen={showOfficerLogin} 
+        onClose={() => setShowOfficerLogin(false)} 
+      />
     </header>
   );
 };

@@ -53,8 +53,8 @@ const Apply: React.FC = () => {
   });
 
   const steps = [
-    { number: 1, title: t('personalInfo') },
-    { number: 2, title: t('certificateType') },
+    { number: 1, title: t('certificateType') },
+    { number: 2, title: t('personalInfo') },
     { number: 3, title: t('documentUpload') },
     { number: 4, title: t('reviewSubmit') }
   ];
@@ -171,9 +171,9 @@ const Apply: React.FC = () => {
   const isStepValid = () => {
     switch (currentStep) {
       case 1:
-        return Object.values(formData.personalInfo).every(value => value.trim() !== '');
-      case 2:
         return formData.certificateType !== '';
+      case 2:
+        return Object.values(formData.personalInfo).every(value => value.trim() !== '');
       case 3:
         return formData.documents.length > 0;
       case 4:
@@ -282,10 +282,76 @@ const Apply: React.FC = () => {
           </CardHeader>
           <CardContent>
             <AnimatePresence mode="wait">
-              {/* Step 1: Personal Information */}
+              {/* Step 1: Certificate Type */}
               {currentStep === 1 && (
                 <motion.div
                   key="step1"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <div className="space-y-4">
+                    <Label>Select Certificate Type *</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {certificateTypes.map((cert) => (
+                        <Card 
+                          key={cert.value}
+                          className={`cursor-pointer transition-all ${
+                            formData.certificateType === cert.value 
+                              ? 'ring-2 ring-blue-500 bg-blue-50' 
+                              : 'hover:shadow-md'
+                          }`}
+                          onClick={() => handleInputChange('certificateType', '', cert.value)}
+                        >
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h3 className="font-semibold">{cert.label}</h3>
+                                <p className="text-sm text-gray-600">Processing: {cert.processingTime}</p>
+                              </div>
+                              <div className={`
+                                w-5 h-5 rounded-full border-2 flex items-center justify-center
+                                ${formData.certificateType === cert.value 
+                                  ? 'border-blue-500 bg-blue-500' 
+                                  : 'border-gray-300'
+                                }
+                              `}>
+                                {formData.certificateType === cert.value && (
+                                  <Check className="h-3 w-3 text-white" />
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+
+                  {formData.certificateType && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-blue-50 rounded-lg p-6"
+                    >
+                      <h3 className="font-semibold text-blue-900 mb-3">Required Documents:</h3>
+                      <ul className="space-y-2">
+                        {requiredDocuments[formData.certificateType as keyof typeof requiredDocuments]?.map((doc, index) => (
+                          <li key={index} className="flex items-center text-blue-800">
+                            <Check className="h-4 w-4 mr-2 text-blue-600" />
+                            {doc}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </motion.div>
+              )}
+
+              {/* Step 2: Personal Information */}
+              {currentStep === 2 && (
+                <motion.div
+                  key="step2"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
@@ -379,72 +445,6 @@ const Apply: React.FC = () => {
                       className="max-w-xs"
                     />
                   </div>
-                </motion.div>
-              )}
-
-              {/* Step 2: Certificate Type */}
-              {currentStep === 2 && (
-                <motion.div
-                  key="step2"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="space-y-6"
-                >
-                  <div className="space-y-4">
-                    <Label>Select Certificate Type *</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {certificateTypes.map((cert) => (
-                        <Card 
-                          key={cert.value}
-                          className={`cursor-pointer transition-all ${
-                            formData.certificateType === cert.value 
-                              ? 'ring-2 ring-blue-500 bg-blue-50' 
-                              : 'hover:shadow-md'
-                          }`}
-                          onClick={() => handleInputChange('certificateType', '', cert.value)}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h3 className="font-semibold">{cert.label}</h3>
-                                <p className="text-sm text-gray-600">Processing: {cert.processingTime}</p>
-                              </div>
-                              <div className={`
-                                w-5 h-5 rounded-full border-2 flex items-center justify-center
-                                ${formData.certificateType === cert.value 
-                                  ? 'border-blue-500 bg-blue-500' 
-                                  : 'border-gray-300'
-                                }
-                              `}>
-                                {formData.certificateType === cert.value && (
-                                  <Check className="h-3 w-3 text-white" />
-                                )}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-
-                  {formData.certificateType && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-blue-50 rounded-lg p-6"
-                    >
-                      <h3 className="font-semibold text-blue-900 mb-3">Required Documents:</h3>
-                      <ul className="space-y-2">
-                        {requiredDocuments[formData.certificateType as keyof typeof requiredDocuments]?.map((doc, index) => (
-                          <li key={index} className="flex items-center text-blue-800">
-                            <Check className="h-4 w-4 mr-2 text-blue-600" />
-                            {doc}
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
                 </motion.div>
               )}
 

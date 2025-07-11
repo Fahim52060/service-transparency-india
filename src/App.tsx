@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { AuthProvider } from '@/contexts/AuthContext';
 import './i18n';
 
 import Header from '@/components/Layout/Header';
@@ -34,26 +35,28 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/apply" element={<Apply />} />
-                <Route path="/track" element={<Track />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/officer" element={<Officer />} />
-                <Route path="/audit" element={<Audit />} />
-                <Route path="/heatmap" element={<Heatmap />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
-          <Sonner />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/apply" element={<Apply />} />
+                  <Route path="/track" element={<Track />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/officer" element={<Officer />} />
+                  <Route path="/audit" element={<Audit />} />
+                  <Route path="/heatmap" element={<Heatmap />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+            <Toaster />
+            <Sonner />
+          </BrowserRouter>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
