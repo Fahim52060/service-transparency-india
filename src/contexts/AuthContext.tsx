@@ -29,13 +29,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setUser(null);
     localStorage.removeItem('auth_user');
+    // Redirect to home after logout
+    window.location.href = '/';
   };
 
   // Initialize user from localStorage on mount
   React.useEffect(() => {
     const savedUser = localStorage.getItem('auth_user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Error parsing saved user data:', error);
+        localStorage.removeItem('auth_user');
+      }
     }
   }, []);
 

@@ -76,6 +76,12 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({ isOpen, onClose }) => {
     });
     onClose();
     resetForm();
+    // Optional: Redirect to apply page after user login
+    setTimeout(() => {
+      if (window.location.pathname === '/') {
+        window.location.href = '/apply';
+      }
+    }, 1000);
   };
 
   const resetForm = () => {

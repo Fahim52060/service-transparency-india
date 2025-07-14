@@ -47,6 +47,10 @@ const OfficerLoginModal: React.FC<OfficerLoginModalProps> = ({ isOpen, onClose }
     });
     onClose();
     resetForm();
+    // Redirect to dashboard after officer login
+    setTimeout(() => {
+      window.location.href = '/dashboard';
+    }, 1000);
   };
 
   const resetForm = () => {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Check, Upload, X, Download, QrCode as QrCodeIcon } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Upload, X, Download, QrCode as QrCodeIcon, LogIn } from 'lucide-react';
 import QRCode from 'qrcode';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import UserLoginModal from '@/components/auth/UserLoginModal';
 
 interface FormData {
   personalInfo: {
@@ -30,11 +32,28 @@ interface FormData {
 
 const Apply: React.FC = () => {
   const { t } = useTranslation();
+  const { isAuthenticated, user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
   const [applicationId, setApplicationId] = useState('');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Pre-populate user data when authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setFormData(prev => ({
+        ...prev,
+        personalInfo: {
+          ...prev.personalInfo,
+          email: user.email || '',
+          mobileNumber: user.mobile || '',
+          fullName: user.name || ''
+        }
+      }));
+    }
+  }, [isAuthenticated, user]);
 
   const [formData, setFormData] = useState<FormData>({
     personalInfo: {
@@ -182,6 +201,39 @@ const Apply: React.FC = () => {
         return true;
     }
   };
+
+  // Authentication check
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="p-8 text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <LogIn className="h-8 w-8 text-blue-600" />
+            </div>
+            
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              Login Required
+            </h1>
+            
+            <p className="text-gray-600 mb-6">
+              Please login to your account to submit a certificate application.
+            </p>
+            
+            <Button onClick={() => setShowLoginModal(true)} className="flex items-center gap-2 mx-auto">
+              <LogIn className="h-4 w-4" />
+              Login to Continue
+            </Button>
+          </Card>
+        </div>
+        
+        <UserLoginModal 
+          isOpen={showLoginModal} 
+          onClose={() => setShowLoginModal(false)} 
+        />
+      </div>
+    );
+  }
 
   if (applicationSubmitted) {
     return (
@@ -372,7 +424,7 @@ const Apply: React.FC = () => {
                       <Label htmlFor="mobileNumber">{t('mobileNumber')} *</Label>
                       <Input
                         id="mobileNumber"
-                        value={formData.personalInfo.mobileNumber}
+                        value={user?.mobile || formData.personalInfo.mobileNumber}
                         onChange={(e) => handleInputChange('personalInfo', 'mobileNumber', e.target.value)}
                         placeholder="Enter mobile number"
                       />
@@ -417,7 +469,7 @@ const Apply: React.FC = () => {
                       <Input
                         id="email"
                         type="email"
-                        value={formData.personalInfo.email}
+                        value={user?.email || formData.personalInfo.email}
                         onChange={(e) => handleInputChange('personalInfo', 'email', e.target.value)}
                         placeholder="Enter email address"
                       />
